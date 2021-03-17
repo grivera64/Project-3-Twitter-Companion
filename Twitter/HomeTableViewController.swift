@@ -47,6 +47,7 @@ class HomeTableViewController: UITableViewController {
             
         }
         
+        cell.setFavorite(tweetArray[indexPath.row]["favorited"] as! Bool)
         
         return cell
         
@@ -56,7 +57,7 @@ class HomeTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadTweets()
+//        loadTweets()
         
         myRefreshControl.addTarget(self, action: #selector(loadTweets), for: .valueChanged)
         
@@ -68,6 +69,17 @@ class HomeTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
+    
+    override func viewDidAppear(_ animated: Bool)
+    {
+        
+        super.viewDidAppear(animated)
+        loadTweets()
+
+        
+        
+        
+    }
 
     @objc func loadTweets()
     {
@@ -78,7 +90,7 @@ class HomeTableViewController: UITableViewController {
         
         let params = ["count": numberOfTweet]
         
-        TwitterAPICaller.client?.getDictionariesRequest(url: myUrl, parameters: params, success: { (tweets: [NSDictionary]) in
+        TwitterAPICaller.client?.getDictionariesRequest(url: myUrl, parameters: params as [String : Any], success: { (tweets: [NSDictionary]) in
             
             self.tweetArray.removeAll()
             
